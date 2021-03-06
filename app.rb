@@ -1,19 +1,21 @@
 require 'sinatra'
 require 'sinatra/reloader'
 
-get '/detail/*/edit' do |id|
-  erb :detail_edit
+set :views, settings.root + '/views/articles'
+
+get '/articles/*/edit' do |id|
+  erb :edit
 end
 
-get '/detail/*' do |id|
-  erb :detail
+get '/articles/*' do |id|
+  erb :show
 end
 
-get '/add' do
-  erb :add
+get '/articles/new' do
+  erb :new
 end
 
-get '/' do
+get '/articles' do
   erb :index
 end
 
