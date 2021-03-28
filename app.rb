@@ -4,6 +4,10 @@ require 'json'
 
 set :views, settings.root + '/views/articles'
 
+get '/' do
+  redirect to('/articles')
+end
+
 get '/articles' do
   @page_title = 'memo-app'
 
