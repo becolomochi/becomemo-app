@@ -4,6 +4,15 @@ require 'json'
 
 set :views, settings.root + '/views/articles'
 
+filename = 'articles.json'
+
+# jsonを読み込み、ハッシュに変換する
+def articles(filename)
+  File.open(filename) do |line|
+    hash = JSON.load(line)
+  end
+end
+
 get '/' do
   redirect to('/articles')
 end
@@ -11,18 +20,29 @@ end
 get '/articles' do
   @page_title = 'memo-app'
 
-  # jsonを読み込み、ハッシュに変換する
-  file = 'articles.json'
-  File.open(file) do |line|
-    hash = JSON.load(line)
-    @articles = hash["articles"]
-  end
+  @articles = articles(filename)
 
   erb :index
 end
 
-post '/articles' do
-  # TODO: jsonファイルにメモを書き込む実装
+post '/articles/new' do
+  # 入力内容を得る
+  hash = {
+    id: articles(filename).size + 1,
+    title: params[:title],
+    content: params[:content]
+  }
+
+  # 記事一覧に入力内容を追加する
+  articles = articles(filename).push(hash)
+
+  # json形式でファイルに書き込む
+  File.open(filename, "w") do |line|
+    line.write(articles.to_json)
+  end
+
+  # 記事一覧ページに飛ぶ
+  redirect to('/articles')
 end
 
 get '/articles/new' do
