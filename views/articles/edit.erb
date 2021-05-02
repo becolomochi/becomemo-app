@@ -18,7 +18,8 @@
         <a href="/articles/<%= @id %>">メモに戻る</a>
       </header>
       <main class="main">
-        <form action="/articles" method="post" class="">
+        <form action="/articles/<%= @id %>/edit" method="post" class="">
+          <input type="hidden" name="_method" value="patch">
           <div class="">
             <input type="text" placeholder="メモのタイトル" name="title" value="<%= @article_title %>" class="">
           </div>
