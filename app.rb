@@ -54,7 +54,16 @@ end
 get '/articles/:id' do |id|
   @page_title = 'メモの詳細'
 
+  # jsonファイルを読み込む
+  @articles = articles(filename)
+
   @id = params[:id]
+  @articles.each do |article|
+    if article['id'] == @id.to_i
+      @article_title = article['title']
+      @article_content = article['content']
+    end
+  end
 
   erb :show
 end
