@@ -20,13 +20,13 @@
       <main class="main">
         <form action="/articles" method="post" class="">
           <div class="">
-            <input type="text" placeholder="メモのタイトル" name="title" class="">
+            <input type="text" placeholder="メモのタイトル" name="title" value="<%= @article_title %>" class="">
           </div>
           <div class="">
-            <textarea placeholder="メモの本文" name="content" class=""></textarea>
+            <textarea placeholder="メモの本文" name="content" class=""><%= @article_content %></textarea>
           </div>
           <div class="">
-            <button type="submit" name="" class="">メモを保存する</button>
+            <button type="submit" name="" class="">変更する</button>
           </div>
         </form>
       </main>
