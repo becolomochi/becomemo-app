@@ -69,7 +69,25 @@ get '/articles/:id' do |id|
 end
 
 delete '/articles/:id' do
-  # TODO: jsonファイルからメモを削除する実装
+  @id = params[:id]
+
+  # jsonファイルを読み込む
+  articles = articles(filename)
+
+  # idを比較して削除する
+  articles.each do |article|
+    if article['id'] == @id.to_i
+      articles.delete(article)
+    end
+  end
+
+  # json形式でファイルに書き込む
+  File.open(filename, 'w') do |line|
+    line.write(articles.to_json)
+  end
+
+  # 一覧に飛ぶ
+  redirect to("/articles")
 end
 
 patch '/articles/:id/edit' do
