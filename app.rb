@@ -6,6 +6,14 @@ require 'cgi/util'
 set :views, settings.root + '/views/articles'
 
 filename = 'articles.json'
+dummy_text = '[{"id":0,"title":"メモのサンプル","content":"メモのダミーです。"}]'
+
+# ファイルがない場合はファイルを作る
+if !File.exist?(filename)
+  File.open(filename, 'w') do |line|
+    line.write(dummy_text)
+  end
+end
 
 # jsonを読み込み、ハッシュに変換する
 def articles(filename)
