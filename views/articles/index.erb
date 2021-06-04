@@ -1,14 +1,19 @@
-<a href="/articles/new">メモを追加する</a>
-<% if @articles.empty? %>
-  <p>メモはまだありません</p>
-<% else %>
-  <ul class="memo-list">
-    <% @articles.each do |article| %>
-      <li class="memo-list__item">
-        <a href="/articles/<%= article["id"] %>" class="memo-list__link">
-          <%= CGI.escape_html(article["title"]).empty? ? 'タイトルなし' : CGI.escape_html(article["title"]) %>
-        </a>
-      </li>
-    <% end %>
-  </ul>
-<% end %>
+<div class="main__btn-container">
+  <a href="/articles/new" class="nes-btn">メモを追加する</a>
+</div>
+
+<div class="nes-container">
+  <% if @articles.empty? %>
+    <p class="memo-list__empty">メモはまだありません</p>
+  <% else %>
+    <ul class="memo-list">
+      <% @articles.each do |article| %>
+        <li class="memo-list__item">
+          <a href="/articles/<%= article["id"] %>" class="memo-list__link">
+            <%= CGI.escape_html(article["title"]).empty? ? 'タイトルなし' : CGI.escape_html(article["title"]) %>
+          </a>
+        </li>
+      <% end %>
+    </ul>
+  <% end %>
+</div>

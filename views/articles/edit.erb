@@ -1,14 +1,18 @@
-<a href="/articles/<%= @id %>">メモに戻る</a>
-<form action="/articles/<%= @id %>/edit" method="post" class="">
+<div class="main__btn-container-back">
+  <a href="/articles/<%= @id %>">◀ メモに戻る</a>
+</div>
+
+<form action="/articles/<%= @id %>/edit" method="post" class="nes-container with-title form">
+  <h2 class="title">メモをなおす</h2>
   <input type="hidden" name="_method" value="patch">
-  <div class="">
-    <input type="text" placeholder="メモのタイトル" name="title" value="<%= CGI.escape_html(@article_title) %>" class="">
+  <div class="form__group">
+    <input type="text" placeholder="メモのタイトル" name="title" value="<%= CGI.escape_html(@article_title) %>" class="nes-input">
   </div>
-  <div class="">
-    必須項目
-    <textarea placeholder="メモの本文" name="content" class="" required><%= CGI.escape_html(@article_content) %></textarea>
+  <div class="form__group">
+    <textarea placeholder="メモの本文" name="content" rows="6" class="nes-textarea" required><%= CGI.escape_html(@article_content) %></textarea>
+    <span class="nes-text is-error form__note">※必須項目</span>
   </div>
-  <div class="">
-    <button type="submit" name="" class="">変更する</button>
+  <div class="form__group">
+    <button type="submit" name="" class="nes-btn form__btn">変更する</button>
   </div>
 </form>

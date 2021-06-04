@@ -1,17 +1,21 @@
-<a href="/articles">トップに戻る</a>
-<div>
-  <%= @id %>
+<div class="main__btn-container-back">
+  <a href="/articles">◀ トップに戻る</a>
 </div>
-<div>
-  <%= CGI.escape_html(@article_title) %>
+
+<div class="nes-container with-title">
+  <p class="title">ID: <%= @id %></p>
+  <h2>
+    <%= CGI.escape_html(@article_title) %>
+  </h2>
+  <div>
+    <%= CGI.escape_html(@article_content) %>
+  </div>
 </div>
-<div>
-  <%= CGI.escape_html(@article_content) %>
-</div>
-<div>
+
+<div class="nes-container main__edit-container">
   <form form action="/articles/<%= @id %>" method="post" class="">
     <input type="hidden" name="_method" value="delete">
-    <button type="submit" class="">削除する</button>
+    <button type="submit" class="nes-btn is-error">DELETE</button>
   </form>
-  <a href="/articles/<%= @id %>/edit">編集する</a>
+  <a href="/articles/<%= @id %>/edit" class="nes-btn">メモをなおす</a>
 </div>

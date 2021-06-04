@@ -1,0 +1,12 @@
+.header {
+  text-align: center;
+  font-size: 24px;
+}
+
+.header__title-link {
+  color: #aaa;
+  &:hover {
+    color: #209cee;
+    text-decoration: none;
+  }
+}
