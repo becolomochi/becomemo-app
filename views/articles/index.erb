@@ -1,36 +1,10 @@
-<!DOCTYPE html>
-<html lang="ja">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width">
-    <title><%= @page_title %></title>
-    <link rel="shortcut icon" href="/assets/img/favicon.ico">
-    <link rel="apple-touch-icon" sizes="180x180" href="/assets/img/apple-touch-icon.png">
-    <link rel="stylesheet" href="/assets/css/style.css">
-  </head>
-  <body>
-    <div class="wrapper">
-      <header class="header">
-        <h1 class="header__title">
-          <a href="/articles">memo-app</a>
-        </h1>
-        <a href="/articles/new">メモを追加する</a>
-      </header>
-      <main class="main">
-        <ul class="memo-list">
-          <% @articles.each do |article| %>
-            <li class="memo-list__item">
-              <a href="/articles/<%= article["id"] %>" class="memo-list__link">
-                <%= CGI.escape_html(article["title"]).empty? ? 'タイトルなし' : CGI.escape_html(article["title"]) %>
-              </a>
-            </li>
-          <% end %>
-        </ul>
-      </main>
-      <footer class="footer">
-        <p class="footer__copyright">becolomochi</p>
-      </footer>
-    </div>
-  </body>
-</html>
+<a href="/articles/new">メモを追加する</a>
+<ul class="memo-list">
+  <% @articles.each do |article| %>
+    <li class="memo-list__item">
+      <a href="/articles/<%= article["id"] %>" class="memo-list__link">
+        <%= CGI.escape_html(article["title"]).empty? ? 'タイトルなし' : CGI.escape_html(article["title"]) %>
+      </a>
+    </li>
+  <% end %>
+</ul>

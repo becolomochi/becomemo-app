@@ -1,39 +1,13 @@
-<!DOCTYPE html>
-<html lang="ja">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width">
-    <title><%= @page_title %></title>
-    <link rel="shortcut icon" href="/assets/img/favicon.ico">
-    <link rel="apple-touch-icon" sizes="180x180" href="/assets/img/apple-touch-icon.png">
-    <link rel="stylesheet" href="/assets/css/style.css">
-  </head>
-  <body>
-    <div class="wrapper">
-      <header class="header">
-        <h1 class="header__title">
-          <a href="/articles">memo-app</a>
-        </h1>
-        <a href="/articles/new">トップに戻る</a>
-      </header>
-      <main class="main">
-        <form action="/articles/new" method="post" class="">
-          <div class="">
-            <input type="text" placeholder="メモのタイトル" name="title" class="">
-          </div>
-          <div class="">
-            必須項目
-            <textarea placeholder="メモの本文" name="content" class="" required></textarea>
-          </div>
-          <div class="">
-            <button type="submit" name="" class="">メモを保存する</button>
-          </div>
-        </form>
-      </main>
-      <footer class="footer">
-        <p class="footer__copyright">becolomochi</p>
-      </footer>
-    </div>
-  </body>
-</html>
+<a href="/articles">トップに戻る</a>
+<form action="/articles/new" method="post" class="">
+  <div class="">
+    <input type="text" placeholder="メモのタイトル" name="title" class="">
+  </div>
+  <div class="">
+    必須項目
+    <textarea placeholder="メモの本文" name="content" class="" required></textarea>
+  </div>
+  <div class="">
+    <button type="submit" name="" class="">メモを保存する</button>
+  </div>
+</form>

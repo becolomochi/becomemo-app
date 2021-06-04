@@ -1,43 +1,17 @@
-<!DOCTYPE html>
-<html lang="ja">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width">
-    <title><%= @page_title %></title>
-    <link rel="shortcut icon" href="/assets/img/favicon.ico">
-    <link rel="apple-touch-icon" sizes="180x180" href="/assets/img/apple-touch-icon.png">
-    <link rel="stylesheet" href="/assets/css/style.css">
-  </head>
-  <body>
-    <div class="wrapper">
-      <header class="header">
-        <h1 class="header__title">
-          <a href="/articles">memo-app</a>
-        </h1>
-        <a href="/articles">トップに戻る</a>
-      </header>
-      <main class="main">
-        <div>
-          <%= @id %>
-        </div>
-        <div>
-          <%= CGI.escape_html(@article_title) %>
-        </div>
-        <div>
-          <%= CGI.escape_html(@article_content) %>
-        </div>
-        <div>
-          <form form action="/articles/<%= @id %>" method="post" class="">
-            <input type="hidden" name="_method" value="delete">
-            <button type="submit" class="">削除する</button>
-          </form>
-          <a href="/articles/<%= @id %>/edit">編集する</a>
-        </div>
-      </main>
-      <footer class="footer">
-        <p class="footer__copyright">becolomochi</p>
-      </footer>
-    </div>
-  </body>
-</html>
+<a href="/articles">トップに戻る</a>
+<div>
+  <%= @id %>
+</div>
+<div>
+  <%= CGI.escape_html(@article_title) %>
+</div>
+<div>
+  <%= CGI.escape_html(@article_content) %>
+</div>
+<div>
+  <form form action="/articles/<%= @id %>" method="post" class="">
+    <input type="hidden" name="_method" value="delete">
+    <button type="submit" class="">削除する</button>
+  </form>
+  <a href="/articles/<%= @id %>/edit">編集する</a>
+</div>
