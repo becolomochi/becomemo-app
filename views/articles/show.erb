@@ -22,10 +22,10 @@
           <%= @id %>
         </div>
         <div>
-          <%= @article_title %>
+          <%= CGI.escape_html(@article_title) %>
         </div>
         <div>
-          <%= @article_content %>
+          <%= CGI.escape_html(@article_content) %>
         </div>
         <div>
           <form form action="/articles/<%= @id %>" method="post" class="">

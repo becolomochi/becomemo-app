@@ -1,6 +1,7 @@
 require 'sinatra'
 require 'sinatra/reloader'
 require 'json'
+require 'cgi/util'
 
 set :views, settings.root + '/views/articles'
 
