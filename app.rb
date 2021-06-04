@@ -19,10 +19,9 @@ get '/' do
 end
 
 get '/articles' do
-  @page_title = 'memo-app'
-
   @articles = articles(filename)
 
+  @page_title = 'becomemo-app'
   erb :index
 end
 
@@ -47,14 +46,11 @@ post '/articles/new' do
 end
 
 get '/articles/new' do
-  @page_title = 'メモを追加'
-
+  @page_title = 'メモを追加 | becomemo-app'
   erb :new
 end
 
 get '/articles/:id' do |id|
-  @page_title = 'メモの詳細'
-
   # jsonファイルを読み込む
   @articles = articles(filename)
 
@@ -66,6 +62,7 @@ get '/articles/:id' do |id|
     end
   end
 
+  @page_title = "メモの詳細 | becomemo-app"
   erb :show
 end
 
@@ -115,8 +112,6 @@ patch '/articles/:id/edit' do
 end
 
 get '/articles/:id/edit' do |id|
-  @page_title = 'メモを編集'
-
   # jsonファイルを読み込む
   @articles = articles(filename)
 
@@ -128,6 +123,7 @@ get '/articles/:id/edit' do |id|
     end
   end
 
+  @page_title = "メモの編集 | becomemo-app"
   erb :edit
 end
 
