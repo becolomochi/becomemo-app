@@ -24,7 +24,8 @@
             <input type="text" placeholder="メモのタイトル" name="title" value="<%= CGI.escape_html(@article_title) %>" class="">
           </div>
           <div class="">
-            <textarea placeholder="メモの本文" name="content" class=""><%= CGI.escape_html(@article_content) %></textarea>
+            必須項目
+            <textarea placeholder="メモの本文" name="content" class="" required><%= CGI.escape_html(@article_content) %></textarea>
           </div>
           <div class="">
             <button type="submit" name="" class="">変更する</button>

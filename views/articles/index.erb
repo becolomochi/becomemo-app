@@ -22,8 +22,7 @@
           <% @articles.each do |article| %>
             <li class="memo-list__item">
               <a href="/articles/<%= article["id"] %>" class="memo-list__link">
-                <%= CGI.escape_html(article["title"]) %>
-                タイトルなし
+                <%= CGI.escape_html(article["title"]).empty? ? 'タイトルなし' : CGI.escape_html(article["title"]) %>
               </a>
             </li>
           <% end %>
