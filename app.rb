@@ -6,13 +6,22 @@ require 'cgi/util'
 set :views, settings.root + '/views/articles'
 
 filename = 'articles.json'
-dummy_text = '[{"id":0,"title":"メモのサンプル","content":"メモのダミーです。"}]'
 
 # ファイルがない場合はファイルを作る
-if !File.exist?(filename)
-  File.open(filename, 'w') do |line|
-    line.write(dummy_text)
+def if_no_article_file_then_create(filename)
+  dummy_text = '[{"id":0,"title":"メモのサンプル","content":"メモのダミーです。"}]'
+
+  if !File.exist?(filename)
+    File.open(filename, 'w') do |line|
+      line.write(dummy_text)
+    end
   end
+end
+
+# 出力時にエスケープする
+def text_escape(string)
+  string = CGI.escape_html(string)
+  string.gsub(/\r\n|\r|\n/, "<br>")
 end
 
 # jsonを読み込み、ハッシュに変換する
@@ -27,6 +36,7 @@ get '/' do
 end
 
 get '/articles' do
+  if_no_article_file_then_create(filename)
   @articles = articles(filename)
 
   @page_title = 'becomemo-app'
@@ -59,7 +69,7 @@ get '/articles/new' do
 end
 
 get '/articles/:id' do |id|
-  # jsonファイルを読み込む
+  if_no_article_file_then_create(filename)
   @articles = articles(filename)
 
   @id = params[:id]
@@ -75,13 +85,11 @@ get '/articles/:id' do |id|
 end
 
 delete '/articles/:id' do
+  @articles = articles(filename)
+
   @id = params[:id]
-
-  # jsonファイルを読み込む
-  articles = articles(filename)
-
   # idを比較して削除する
-  articles.each do |article|
+  @articles.each do |article|
     if article['id'] == @id.to_i
       articles.delete(article)
     end
@@ -97,11 +105,9 @@ delete '/articles/:id' do
 end
 
 patch '/articles/:id/edit' do
-  @id = params[:id]
-
-  # jsonファイルを読み込む
   @articles = articles(filename)
 
+  @id = params[:id]
   # idを比較して入力内容で変更する
   @articles.each do |article|
     if article['id'] == @id.to_i
@@ -120,7 +126,7 @@ patch '/articles/:id/edit' do
 end
 
 get '/articles/:id/edit' do |id|
-  # jsonファイルを読み込む
+  if_no_article_file_then_create(filename)
   @articles = articles(filename)
 
   @id = params[:id]

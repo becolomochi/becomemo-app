@@ -5,10 +5,10 @@
 <div class="nes-container with-title">
   <p class="title">ID: <%= @id %></p>
   <h2>
-    <%= CGI.escape_html(@article_title) %>
+    <%= text_escape(@article_title) %>
   </h2>
   <div>
-    <%= CGI.escape_html(@article_content) %>
+    <%= text_escape(@article_content) %>
   </div>
 </div>
 
