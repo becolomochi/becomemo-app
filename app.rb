@@ -80,8 +80,12 @@ get '/articles/:id' do |id|
     end
   end
 
-  @page_title = "メモの詳細 | becomemo-app"
-  erb :show
+  if @article_title
+    @page_title = "メモの詳細 | becomemo-app"
+    erb :show
+  else
+    not_found
+  end
 end
 
 delete '/articles/:id' do
