@@ -79,7 +79,7 @@ a:not([class]):hover {
   color: #000;
 }
 .memo-list__link:hover {
-  background: #AAA;
+  background: #209cee;
   color: #000;
   text-decoration: none;
 }
