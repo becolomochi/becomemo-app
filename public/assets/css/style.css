@@ -43,6 +43,7 @@ a:not([class]):hover {
 .footer__copyright {
   font-size: 12px;
   color: #aaa;
+  margin-bottom: 0.25em;
 }
 
 .main__btn-container {
