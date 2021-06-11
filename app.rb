@@ -91,13 +91,13 @@ delete '/articles/:id' do
   # idを比較して削除する
   @articles.each do |article|
     if article['id'] == @id.to_i
-      articles.delete(article)
+      @articles.delete(article)
     end
   end
 
   # json形式でファイルに書き込む
   File.open(filename, 'w') do |line|
-    line.write(articles.to_json)
+    line.write(@articles.to_json)
   end
 
   # 一覧に飛ぶ

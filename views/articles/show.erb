@@ -13,9 +13,20 @@
 </div>
 
 <div class="nes-container main__edit-container">
-  <form form action="/articles/<%= @id %>" method="post" class="">
+  <form action="/articles/<%= @id %>" method="post" id="form">
     <input type="hidden" name="_method" value="delete">
-    <button type="submit" class="nes-btn is-error">DELETE</button>
+    <button type="button" class="nes-btn is-error" onclick="deletePost(this)">DELETE</button>
   </form>
   <a href="/articles/<%= @id %>/edit" class="nes-btn">メモをなおす</a>
 </div>
+
+<script>
+  function deletePost(e) {
+    "use strict";
+    if(window.confirm('本当に削除しますか？')) {
+      document.getElementById('form').submit();
+    } else {
+      return false;
+    }
+  }
+</script>
