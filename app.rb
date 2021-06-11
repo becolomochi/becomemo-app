@@ -1,33 +1,34 @@
+# frozen_string_literal: true
+
 require 'sinatra'
 require 'sinatra/reloader'
 require 'json'
 require 'cgi/util'
 
-set :views, settings.root + '/views/articles'
+set :views, "#{settings.root}/views/articles"
 
 filename = 'articles.json'
 
 # ファイルがない場合はファイルを作る
 def if_no_article_file_then_create(filename)
-  dummy_text = '[{"id":0,"title":"メモのサンプル","content":"メモのダミーです。"}]'
+  return if File.exist? filename
 
-  if !File.exist?(filename)
-    File.open(filename, 'w') do |line|
-      line.write(dummy_text)
-    end
+  dummy_text = '[{"id":0,"title":"メモのサンプル","content":"メモのダミーです。"}]'
+  File.open(filename, 'w') do |line|
+    line.write(dummy_text)
   end
 end
 
 # 出力時にエスケープする
 def text_escape(string)
   string = CGI.escape_html(string)
-  string.gsub(/\r\n|\r|\n/, "<br>")
+  string.gsub(/\r\n|\r|\n/, '<br>')
 end
 
 # jsonを読み込み、ハッシュに変換する
 def articles(filename)
   File.open(filename) do |line|
-    hash = JSON.load(line)
+    JSON.parse(line.read)
   end
 end
 
@@ -55,7 +56,7 @@ post '/articles/new' do
   articles = articles(filename).push(hash)
 
   # json形式でファイルに書き込む
-  File.open(filename, "w") do |line|
+  File.open(filename, 'w') do |line|
     line.write(articles.to_json)
   end
 
@@ -68,7 +69,7 @@ get '/articles/new' do
   erb :new
 end
 
-get '/articles/:id' do |id|
+get '/articles/:id' do
   if_no_article_file_then_create(filename)
   @articles = articles(filename)
 
@@ -81,7 +82,7 @@ get '/articles/:id' do |id|
   end
 
   if @article_title
-    @page_title = "メモの詳細 | becomemo-app"
+    @page_title = 'メモの詳細 | becomemo-app'
     erb :show
   else
     not_found
@@ -94,9 +95,7 @@ delete '/articles/:id' do
   @id = params[:id]
   # idを比較して削除する
   @articles.each do |article|
-    if article['id'] == @id.to_i
-      @articles.delete(article)
-    end
+    @articles.delete(article) if article['id'] == @id.to_i
   end
 
   # json形式でファイルに書き込む
@@ -105,7 +104,7 @@ delete '/articles/:id' do
   end
 
   # 一覧に飛ぶ
-  redirect to("/articles")
+  redirect to('/articles')
 end
 
 patch '/articles/:id/edit' do
@@ -129,7 +128,7 @@ patch '/articles/:id/edit' do
   redirect to("/articles/#{@id}")
 end
 
-get '/articles/:id/edit' do |id|
+get '/articles/:id/edit' do
   if_no_article_file_then_create(filename)
   @articles = articles(filename)
 
@@ -141,11 +140,11 @@ get '/articles/:id/edit' do |id|
     end
   end
 
-  @page_title = "メモの編集 | becomemo-app"
+  @page_title = 'メモの編集 | becomemo-app'
   erb :edit
 end
 
 not_found do
-  @page_title = "ページが見つかりません | becomemo-app"
+  @page_title = 'ページが見つかりません | becomemo-app'
   erb :error
 end
