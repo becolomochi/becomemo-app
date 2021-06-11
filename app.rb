@@ -141,4 +141,7 @@ get '/articles/:id/edit' do |id|
   erb :edit
 end
 
-# TODO: 404
+not_found do
+  @page_title = "ページが見つかりません | becomemo-app"
+  erb :error
+end
