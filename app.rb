@@ -32,6 +32,13 @@ def read_json_file_to_hash(filename)
   end
 end
 
+# json形式でファイルに書き込む
+def write_json_file(filename, data)
+  File.open(filename, 'w') do |line|
+    line.write(data.to_json)
+  end
+end
+
 get '/' do
   redirect to('/articles')
 end
@@ -54,11 +61,7 @@ post '/articles' do
 
   # 記事一覧に入力内容を追加する
   articles = read_json_file_to_hash(filename).push(hash)
-
-  # json形式でファイルに書き込む
-  File.open(filename, 'w') do |line|
-    line.write(articles.to_json)
-  end
+  write_json_file(filename, articles)
 
   # 記事一覧ページに飛ぶ
   redirect to('/articles')
@@ -97,11 +100,7 @@ delete '/articles/:id' do
   articles.each do |article|
     articles.delete(article) if article['id'] == @id.to_i
   end
-
-  # json形式でファイルに書き込む
-  File.open(filename, 'w') do |line|
-    line.write(articles.to_json)
-  end
+  write_json_file(filename, articles)
 
   # 一覧に飛ぶ
   redirect to('/articles')
@@ -118,11 +117,7 @@ patch '/articles/:id' do
       article['content'] = params[:content]
     end
   end
-
-  # json形式でファイルに書き込む
-  File.open(filename, 'w') do |line|
-    line.write(articles.to_json)
-  end
+  write_json_file(filename, articles)
 
   # 記事詳細に飛ぶ
   redirect to("/articles/#{@id}")
