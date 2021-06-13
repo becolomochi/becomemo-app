@@ -44,7 +44,7 @@ get '/articles' do
   erb :index
 end
 
-post '/articles/new' do
+post '/articles' do
   # 入力内容を得る
   hash = {
     id: articles(filename).size + 1,
