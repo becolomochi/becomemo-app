@@ -26,7 +26,7 @@ def text_escape(string)
 end
 
 # jsonを読み込み、ハッシュに変換する
-def articles(filename)
+def read_json_file_to_hash(filename)
   File.open(filename) do |line|
     JSON.parse(line.read)
   end
@@ -38,7 +38,7 @@ end
 
 get '/articles' do
   if_no_article_file_then_create(filename)
-  @articles = articles(filename)
+  @articles = read_json_file_to_hash(filename)
 
   @page_title = 'becomemo-app'
   erb :index
@@ -47,13 +47,13 @@ end
 post '/articles' do
   # 入力内容を得る
   hash = {
-    id: articles(filename).size + 1,
+    id: read_json_file_to_hash(filename).size + 1,
     title: params[:title],
     content: params[:content]
   }
 
   # 記事一覧に入力内容を追加する
-  articles = articles(filename).push(hash)
+  articles = read_json_file_to_hash(filename).push(hash)
 
   # json形式でファイルに書き込む
   File.open(filename, 'w') do |line|
@@ -71,10 +71,10 @@ end
 
 get '/articles/:id' do
   if_no_article_file_then_create(filename)
-  @articles = articles(filename)
+  articles = read_json_file_to_hash(filename)
 
   @id = params[:id]
-  @articles.each do |article|
+  articles.each do |article|
     if article['id'] == @id.to_i
       @article_title = article['title']
       @article_content = article['content']
@@ -90,17 +90,17 @@ get '/articles/:id' do
 end
 
 delete '/articles/:id' do
-  @articles = articles(filename)
+  articles = read_json_file_to_hash(filename)
 
   @id = params[:id]
   # idを比較して削除する
-  @articles.each do |article|
-    @articles.delete(article) if article['id'] == @id.to_i
+  articles.each do |article|
+    articles.delete(article) if article['id'] == @id.to_i
   end
 
   # json形式でファイルに書き込む
   File.open(filename, 'w') do |line|
-    line.write(@articles.to_json)
+    line.write(articles.to_json)
   end
 
   # 一覧に飛ぶ
@@ -108,11 +108,11 @@ delete '/articles/:id' do
 end
 
 patch '/articles/:id' do
-  @articles = articles(filename)
+  articles = read_json_file_to_hash(filename)
 
   @id = params[:id]
   # idを比較して入力内容で変更する
-  @articles.each do |article|
+  articles.each do |article|
     if article['id'] == @id.to_i
       article['title'] = params[:title]
       article['content'] = params[:content]
@@ -121,7 +121,7 @@ patch '/articles/:id' do
 
   # json形式でファイルに書き込む
   File.open(filename, 'w') do |line|
-    line.write(@articles.to_json)
+    line.write(articles.to_json)
   end
 
   # 記事詳細に飛ぶ
@@ -130,10 +130,10 @@ end
 
 get '/articles/:id/edit' do
   if_no_article_file_then_create(filename)
-  @articles = articles(filename)
+  articles = read_json_file_to_hash(filename)
 
   @id = params[:id]
-  @articles.each do |article|
+  articles.each do |article|
     if article['id'] == @id.to_i
       @article_title = article['title']
       @article_content = article['content']
