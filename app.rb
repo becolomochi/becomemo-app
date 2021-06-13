@@ -39,6 +39,16 @@ def write_json_file(filename, data)
   end
 end
 
+# idを照らし合わせて記事を取り出す
+def same_id_article(articles, id)
+  articles.each do |article|
+    if article['id'] == id.to_i
+      return article
+    end
+  end
+end
+
+# ルーティング
 get '/' do
   redirect to('/articles')
 end
@@ -76,13 +86,10 @@ get '/articles/:id' do
   if_no_article_file_then_create(filename)
   articles = read_json_file_to_hash(filename)
 
-  @id = params[:id]
-  articles.each do |article|
-    if article['id'] == @id.to_i
-      @article_title = article['title']
-      @article_content = article['content']
-    end
-  end
+  article = same_id_article(articles, params[:id])
+  @article_id = params[:id]
+  @article_title = article['title']
+  @article_content = article['content']
 
   if @article_title
     @page_title = 'メモの詳細 | becomemo-app'
@@ -94,12 +101,7 @@ end
 
 delete '/articles/:id' do
   articles = read_json_file_to_hash(filename)
-
-  @id = params[:id]
-  # idを比較して削除する
-  articles.each do |article|
-    articles.delete(article) if article['id'] == @id.to_i
-  end
+  articles.delete(same_id_article(articles, params[:id]))
   write_json_file(filename, articles)
 
   # 一覧に飛ぶ
@@ -109,31 +111,19 @@ end
 patch '/articles/:id' do
   articles = read_json_file_to_hash(filename)
 
-  @id = params[:id]
-  # idを比較して入力内容で変更する
-  articles.each do |article|
-    if article['id'] == @id.to_i
-      article['title'] = params[:title]
-      article['content'] = params[:content]
-    end
-  end
+  article = same_id_article(articles, params[:id])
+  article['title'] = params[:title]
+  article['content'] = params[:content]
   write_json_file(filename, articles)
 
   # 記事詳細に飛ぶ
-  redirect to("/articles/#{@id}")
+  redirect to("/articles/#{params[:id]}")
 end
 
 get '/articles/:id/edit' do
   if_no_article_file_then_create(filename)
   articles = read_json_file_to_hash(filename)
-
-  @id = params[:id]
-  articles.each do |article|
-    if article['id'] == @id.to_i
-      @article_title = article['title']
-      @article_content = article['content']
-    end
-  end
+  @article = same_id_article(articles, params[:id])
 
   @page_title = 'メモの編集 | becomemo-app'
   erb :edit
