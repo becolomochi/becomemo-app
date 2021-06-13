@@ -107,7 +107,7 @@ delete '/articles/:id' do
   redirect to('/articles')
 end
 
-patch '/articles/:id/edit' do
+patch '/articles/:id' do
   @articles = articles(filename)
 
   @id = params[:id]

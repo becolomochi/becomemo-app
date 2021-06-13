@@ -2,7 +2,7 @@
   <a href="/articles/<%= @id %>">◀ メモに戻る</a>
 </div>
 
-<form action="/articles/<%= @id %>/edit" method="post" class="nes-container with-title form">
+<form action="/articles/<%= @id %>" method="post" class="nes-container with-title form">
   <h2 class="title">メモをなおす</h2>
   <input type="hidden" name="_method" value="patch">
   <div class="form__group">
