@@ -85,13 +85,9 @@ end
 get '/articles/:id' do
   if_no_article_file_then_create(filename)
   articles = read_json_file_to_hash(filename)
+  @article = same_id_article(articles, params[:id])
 
-  article = same_id_article(articles, params[:id])
-  @article_id = params[:id]
-  @article_title = article['title']
-  @article_content = article['content']
-
-  if @article_title
+  if @article
     @page_title = 'メモの詳細 | becomemo-app'
     erb :show
   else
