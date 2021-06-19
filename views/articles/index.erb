@@ -9,8 +9,8 @@
     <ul class="memo-list">
       <% @articles.reverse_each do |article| %>
         <li class="memo-list__item">
-          <a href="/articles/<%= article["id"] %>" class="memo-list__link">
-            <%= article["title"].empty? ? 'タイトルなし' : text_escape(article["title"]) %>
+          <a href="/articles/<%= article[:id] %>" class="memo-list__link">
+            <%= article[:title].empty? ? 'タイトルなし' : text_escape(article[:title]) %>
           </a>
         </li>
       <% end %>

@@ -3,21 +3,21 @@
 </div>
 
 <div class="nes-container with-title">
-  <p class="title">ID: <%= @article['id'] %></p>
+  <p class="title">ID: <%= @article[:id] %></p>
   <h2>
-    <%= text_escape(@article['title']) %>
+    <%= text_escape(@article[:title]) %>
   </h2>
   <div>
-    <%= text_escape(@article['content']) %>
+    <%= text_escape(@article[:content]) %>
   </div>
 </div>
 
 <div class="nes-container main__edit-container">
-  <form action="/articles/<%= @article['id'] %>" method="post" id="form">
+  <form action="/articles/<%= @article[:id] %>" method="post" id="form">
     <input type="hidden" name="_method" value="delete">
     <button type="button" class="nes-btn is-error" onclick="deletePost(this)">DELETE</button>
   </form>
-  <a href="/articles/<%= @article['id'] %>/edit" class="nes-btn">メモをなおす</a>
+  <a href="/articles/<%= @article[:id] %>/edit" class="nes-btn">メモをなおす</a>
 </div>
 
 <script>

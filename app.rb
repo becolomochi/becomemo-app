@@ -28,7 +28,7 @@ end
 # jsonを読み込み、ハッシュに変換する
 def read_json_file_to_hash(filename)
   File.open(filename) do |line|
-    JSON.parse(line.read)
+    JSON.parse(line.read, symbolize_names: true)
   end
 end
 
@@ -42,7 +42,7 @@ end
 # idを照らし合わせて記事を取り出す
 def same_id_article(articles, id)
   articles.each do |article|
-    if article['id'] == id.to_i
+    if article[:id] == id.to_i
       return article
     end
   end
@@ -108,8 +108,8 @@ patch '/articles/:id' do
   articles = read_json_file_to_hash(filename)
 
   article = same_id_article(articles, params[:id])
-  article['title'] = params[:title]
-  article['content'] = params[:content]
+  article[:title] = params[:title]
+  article[:content] = params[:content]
   write_json_file(filename, articles)
 
   # 記事詳細に飛ぶ
