@@ -42,9 +42,7 @@ end
 # idを照らし合わせて記事を取り出す
 def same_id_article(articles, id)
   articles.each do |article|
-    if article[:id] == id.to_i
-      return article
-    end
+    return article if article[:id] == id.to_i
   end
 end
 
