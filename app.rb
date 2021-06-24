@@ -46,36 +46,40 @@ def same_id_article(articles, id)
   end
 end
 
+# 一覧を取得
 def list_all
   if_no_article_file_then_create
   read_json_file_to_hash
 end
 
+# 投稿する
 def post_article(title, content)
   hash = {
     id: read_json_file_to_hash.size + 1,
     title: title,
     content: content
   }
-  articles = read_json_file_to_hash.push(hash)
+  articles = list_all
+  articles << hash
   write_json_file(articles)
 end
 
+# 特定の記事を取得
 def get_article(id)
-  if_no_article_file_then_create
-  articles = read_json_file_to_hash
+  articles = list_all
   same_id_article(articles, id)
 end
 
+# 記事の削除
 def delete_article(id)
-  articles = read_json_file_to_hash
+  articles = list_all
   articles.delete(same_id_article(articles, id))
   write_json_file(articles)
 end
 
+# 記事の編集
 def edit_article(id, title, content)
-  articles = read_json_file_to_hash
-
+  articles = list_all
   article = same_id_article(articles, id)
   article[:title] = title
   article[:content] = content
