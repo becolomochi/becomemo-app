@@ -7,14 +7,14 @@ require 'cgi/util'
 
 set :views, "#{settings.root}/views/articles"
 
-filename = 'articles.json'
+ARTICLE_FILE = 'articles.json'
 
 # ファイルがない場合はファイルを作る
-def if_no_article_file_then_create(filename)
-  return if File.exist? filename
+def if_no_article_file_then_create
+  return if File.exist? ARTICLE_FILE
 
   dummy_text = '[{"id":0,"title":"メモのサンプル","content":"メモのダミーです。"}]'
-  File.open(filename, 'w') do |line|
+  File.open(ARTICLE_FILE, 'w') do |line|
     line.write(dummy_text)
   end
 end
@@ -26,15 +26,15 @@ def text_escape(string)
 end
 
 # jsonを読み込み、ハッシュに変換する
-def read_json_file_to_hash(filename)
-  File.open(filename) do |line|
+def read_json_file_to_hash
+  File.open(ARTICLE_FILE) do |line|
     JSON.parse(line.read, symbolize_names: true)
   end
 end
 
 # json形式でファイルに書き込む
-def write_json_file(filename, data)
-  File.open(filename, 'w') do |line|
+def write_json_file(data)
+  File.open(ARTICLE_FILE, 'w') do |line|
     line.write(data.to_json)
   end
 end
@@ -46,32 +46,56 @@ def same_id_article(articles, id)
   end
 end
 
+def list_all
+  if_no_article_file_then_create
+  read_json_file_to_hash
+end
+
+def post_article(title, content)
+  hash = {
+    id: read_json_file_to_hash.size + 1,
+    title: title,
+    content: content
+  }
+  articles = read_json_file_to_hash.push(hash)
+  write_json_file(articles)
+end
+
+def get_article(id)
+  if_no_article_file_then_create
+  articles = read_json_file_to_hash
+  same_id_article(articles, id)
+end
+
+def delete_article(id)
+  articles = read_json_file_to_hash
+  articles.delete(same_id_article(articles, id))
+  write_json_file(articles)
+end
+
+def edit_article(id, title, content)
+  articles = read_json_file_to_hash
+
+  article = same_id_article(articles, id)
+  article[:title] = title
+  article[:content] = content
+  write_json_file(articles)
+end
+
 # ルーティング
 get '/' do
   redirect to('/articles')
 end
 
 get '/articles' do
-  if_no_article_file_then_create(filename)
-  @articles = read_json_file_to_hash(filename)
+  @articles = list_all
 
   @page_title = 'becomemo-app'
   erb :index
 end
 
 post '/articles' do
-  # 入力内容を得る
-  hash = {
-    id: read_json_file_to_hash(filename).size + 1,
-    title: params[:title],
-    content: params[:content]
-  }
-
-  # 記事一覧に入力内容を追加する
-  articles = read_json_file_to_hash(filename).push(hash)
-  write_json_file(filename, articles)
-
-  # 記事一覧ページに飛ぶ
+  post_article(params[:title], params[:content])
   redirect to('/articles')
 end
 
@@ -81,9 +105,7 @@ get '/articles/new' do
 end
 
 get '/articles/:id' do
-  if_no_article_file_then_create(filename)
-  articles = read_json_file_to_hash(filename)
-  @article = same_id_article(articles, params[:id])
+  @article = get_article(params[:id])
 
   if @article
     @page_title = 'メモの詳細 | becomemo-app'
@@ -94,31 +116,17 @@ get '/articles/:id' do
 end
 
 delete '/articles/:id' do
-  articles = read_json_file_to_hash(filename)
-  articles.delete(same_id_article(articles, params[:id]))
-  write_json_file(filename, articles)
-
-  # 一覧に飛ぶ
+  delete_article(params[:id])
   redirect to('/articles')
 end
 
 patch '/articles/:id' do
-  articles = read_json_file_to_hash(filename)
-
-  article = same_id_article(articles, params[:id])
-  article[:title] = params[:title]
-  article[:content] = params[:content]
-  write_json_file(filename, articles)
-
-  # 記事詳細に飛ぶ
+  edit_article(params[:id], params[:title], params[:content])
   redirect to("/articles/#{params[:id]}")
 end
 
 get '/articles/:id/edit' do
-  if_no_article_file_then_create(filename)
-  articles = read_json_file_to_hash(filename)
-  @article = same_id_article(articles, params[:id])
-
+  @article = get_article(params[:id])
   @page_title = 'メモの編集 | becomemo-app'
   erb :edit
 end
