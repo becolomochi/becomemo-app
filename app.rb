@@ -8,6 +8,11 @@ require './lib/article'
 
 set :views, "#{settings.root}/views/articles"
 
+def text_escape(string)
+  string = CGI.escape_html(string)
+  string.gsub(/\r\n|\r|\n/, '<br>')
+end
+
 get '/' do
   redirect to('/articles')
 end
