@@ -12,6 +12,10 @@ class Article
     end
   end
 
+  def initialize
+    if_no_article_file_then_create
+  end
+
   def read_json_file_to_hash
     File.open(ARTICLE_FILE) do |line|
       JSON.parse(line.read, symbolize_names: true)
@@ -31,7 +35,6 @@ class Article
   end
 
   def list
-    if_no_article_file_then_create
     read_json_file_to_hash
   end
 
