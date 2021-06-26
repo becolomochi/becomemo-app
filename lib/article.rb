@@ -34,13 +34,18 @@ class Article
     end
   end
 
+  def latest_id
+    articles = read_json_file_to_hash
+    articles.last[:id]
+  end
+
   def list
     read_json_file_to_hash
   end
 
   def create(title, content)
     hash = {
-      id: read_json_file_to_hash.size + 1,
+      id: latest_id + 1,
       title: title,
       content: content
     }
