@@ -39,13 +39,6 @@ def write_json_file(data)
   end
 end
 
-# idを照らし合わせて記事を取り出す
-def same_id_article(articles, id)
-  articles.each do |article|
-    return article if article[:id] == id.to_i
-  end
-end
-
 # 一覧を取得
 def list_all
   if_no_article_file_then_create
@@ -64,23 +57,24 @@ def post_article(title, content)
   write_json_file(articles)
 end
 
-# 特定の記事を取得
-def get_article(id)
+# idを照らし合わせて記事を取り出す
+def find_article(id)
   articles = list_all
-  same_id_article(articles, id)
+  articles.each do |article|
+    return article if article[:id] == id.to_i
+  end
 end
 
 # 記事の削除
 def delete_article(id)
   articles = list_all
-  articles.delete(same_id_article(articles, id))
+  articles.delete(find_article(id))
   write_json_file(articles)
 end
 
 # 記事の編集
 def edit_article(id, title, content)
-  articles = list_all
-  article = same_id_article(articles, id)
+  article = find_article(id)
   article[:title] = title
   article[:content] = content
   write_json_file(articles)
@@ -109,7 +103,7 @@ get '/articles/new' do
 end
 
 get '/articles/:id' do
-  @article = get_article(params[:id])
+  @article = find_article(params[:id])
 
   if @article
     @page_title = 'メモの詳細 | becomemo-app'
@@ -130,7 +124,7 @@ patch '/articles/:id' do
 end
 
 get '/articles/:id/edit' do
-  @article = get_article(params[:id])
+  @article = find_article(params[:id])
   @page_title = 'メモの編集 | becomemo-app'
   erb :edit
 end
