@@ -29,8 +29,7 @@ class Article
   end
 
   def latest_id
-    articles = list
-    articles.last[:id]
+    list.last[:id]
   end
 
   def create(title, content)
@@ -39,9 +38,7 @@ class Article
       title: title,
       content: content
     }
-    articles = list
-    articles << hash
-    write_json_file(articles)
+    write_json_file(list << hash)
   end
 
   def get(articles, id)
