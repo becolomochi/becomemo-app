@@ -28,12 +28,6 @@ class Article
     end
   end
 
-  def same_id_article(articles, id)
-    articles.each do |article|
-      return article if article[:id] == id.to_i
-    end
-  end
-
   def latest_id
     articles = read_json_file_to_hash
     articles.last[:id]
@@ -54,20 +48,21 @@ class Article
     write_json_file(articles)
   end
 
-  def get(id)
-    articles = list
-    same_id_article(articles, id)
+  def get(articles, id)
+    articles.each do |article|
+      return article if article[:id] == id.to_i
+    end
   end
 
   def drop(id)
     articles = list
-    articles.delete(same_id_article(articles, id))
+    articles.delete(get(articles, id))
     write_json_file(articles)
   end
 
   def edit(id, title, content)
     articles = list
-    article = same_id_article(articles, id)
+    article = get(articles, id)
     article[:title] = title
     article[:content] = content
     write_json_file(articles)
