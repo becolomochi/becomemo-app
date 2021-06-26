@@ -37,7 +37,7 @@ end
 
 get '/articles/:id' do
   article = Article.new
-  @article = article.get(params[:id])
+  @article = article.get(article.list, params[:id])
   if @article
     @page_title = 'メモの詳細 | becomemo-app'
     erb :show
@@ -60,7 +60,7 @@ end
 
 get '/articles/:id/edit' do
   article = Article.new
-  @article = article.get(params[:id])
+  @article = article.get(article.list, params[:id])
   @page_title = 'メモの編集 | becomemo-app'
   erb :edit
 end
