@@ -16,7 +16,7 @@ class Article
     if_no_article_file_then_create
   end
 
-  def read_json_file_to_hash
+  def list
     File.open(ARTICLE_FILE) do |line|
       JSON.parse(line.read, symbolize_names: true)
     end
@@ -29,12 +29,8 @@ class Article
   end
 
   def latest_id
-    articles = read_json_file_to_hash
+    articles = list
     articles.last[:id]
-  end
-
-  def list
-    read_json_file_to_hash
   end
 
   def create(title, content)

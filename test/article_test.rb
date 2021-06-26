@@ -12,7 +12,7 @@ class ArticleTest < Minitest::Test
 
   def test_article_read_file
     article = Article.new
-    assert_equal [{:id=>1, :title=>"メモのサンプル", :content=>"メモのダミーです。"}], article.read_json_file_to_hash
+    assert_equal [{:id=>1, :title=>"メモのサンプル", :content=>"メモのダミーです。"}], article.list
   end
 
   def test_article_latest_id
@@ -29,7 +29,7 @@ class ArticleTest < Minitest::Test
     article = Article.new
     article.create('title', 'content')
     article.create('title2', 'content2')
-    assert_equal [{:id=>1, :title=>"メモのサンプル", :content=>"メモのダミーです。"},{:id=>2, :title=>"title", :content=>"content"},{:id=>3, :title=>"title2", :content=>"content2"}], article.read_json_file_to_hash
+    assert_equal [{:id=>1, :title=>"メモのサンプル", :content=>"メモのダミーです。"},{:id=>2, :title=>"title", :content=>"content"},{:id=>3, :title=>"title2", :content=>"content2"}], article.list
   end
 
   def test_article_get
