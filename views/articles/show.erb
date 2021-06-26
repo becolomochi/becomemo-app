@@ -1,0 +1,32 @@
+<div class="main__btn-container-back">
+  <a href="/articles">◀ トップに戻る</a>
+</div>
+
+<div class="nes-container with-title">
+  <p class="title">ID: <%= @article[:id] %></p>
+  <h2>
+    <%= text_escape(@article[:title]) %>
+  </h2>
+  <div>
+    <%= text_escape(@article[:content]) %>
+  </div>
+</div>
+
+<div class="nes-container main__edit-container">
+  <form action="/articles/<%= @article[:id] %>" method="post" id="form">
+    <input type="hidden" name="_method" value="delete">
+    <button type="button" class="nes-btn is-error" onclick="deletePost(this)">DELETE</button>
+  </form>
+  <a href="/articles/<%= @article[:id] %>/edit" class="nes-btn">メモをなおす</a>
+</div>
+
+<script>
+  function deletePost(e) {
+    "use strict";
+    if(window.confirm('本当に削除しますか？')) {
+      document.getElementById('form').submit();
+    } else {
+      return false;
+    }
+  }
+</script>

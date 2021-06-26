@@ -1,0 +1,19 @@
+<div class="main__btn-container">
+  <a href="/articles/new" class="nes-btn">メモをつくる！</a>
+</div>
+
+<div class="nes-container">
+  <% if @articles.empty? %>
+    <p class="memo-list__empty">メモはまだありません</p>
+  <% else %>
+    <ul class="memo-list">
+      <% @articles.reverse_each do |article| %>
+        <li class="memo-list__item">
+          <a href="/articles/<%= article[:id] %>" class="memo-list__link">
+            <%= article[:title].empty? ? 'タイトルなし' : text_escape(article[:title]) %>
+          </a>
+        </li>
+      <% end %>
+    </ul>
+  <% end %>
+</div>

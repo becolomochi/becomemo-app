@@ -1,0 +1,114 @@
+body {
+  font-family: DotGothic16, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.wrapper {
+  max-width: 40em;
+  margin: 0 auto;
+  padding: 0 1em;
+}
+
+a:not([class]) {
+  color: #aaa;
+}
+a:not([class]):hover {
+  color: #209cee;
+  text-decoration: none;
+}
+
+.nes-container.with-title > .title {
+  margin-top: -2.3rem;
+}
+
+.header {
+  text-align: center;
+  font-size: 24px;
+}
+
+.header__title-link {
+  color: #aaa;
+}
+.header__title-link:hover {
+  color: #209cee;
+  text-decoration: none;
+}
+
+.footer {
+  margin-top: 8em;
+  text-align: center;
+}
+
+.footer__copyright {
+  font-size: 12px;
+  color: #aaa;
+  margin-bottom: 0.25em;
+}
+
+.main__btn-container {
+  text-align: center;
+  margin: 1em 0 2em;
+}
+
+.main__btn-container-back {
+  margin: 1em 0 2em;
+}
+
+.main__edit-container {
+  margin-top: 2em;
+  display: flex;
+  justify-content: space-between;
+}
+
+.memo-list {
+  list-style: none;
+  border-bottom: 2px solid #222;
+  padding: 0;
+  margin: 0;
+}
+
+.memo-list__item {
+  border-top: 2px solid #222;
+  word-wrap: break-word;
+}
+
+.memo-list__link {
+  display: block;
+  padding: 1em;
+  color: #000;
+}
+.memo-list__link:hover {
+  background: #209cee;
+  color: #000;
+  text-decoration: none;
+}
+.memo-list__link:active, .memo-list__link :visited {
+  color: #000;
+}
+
+.memo-list__empty {
+  border-top: 2px solid #222;
+  border-bottom: 2px solid #222;
+  padding: 1em;
+  margin: 4em 0;
+  text-align: center;
+}
+
+.form {
+  margin: 2em 0 4em;
+}
+
+.form__group {
+  margin: 1em 0;
+}
+
+.form__btn {
+  width: 100%;
+}
+
+.form__note {
+  font-size: 12px;
+}
+
+/*# sourceMappingURL=style.css.map */

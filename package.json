@@ -1,0 +1,8 @@
+{
+  "scripts": {
+    "scss": "sass src/scss:public/assets/css"
+  },
+  "devDependencies": {
+    "sass": "^1.34.1"
+  }
+}

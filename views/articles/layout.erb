@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width">
+  <title><%= @page_title %></title>
+  <link rel="shortcut icon" href="/assets/img/favicon.ico">
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/img/apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=DotGothic16&display=swap" rel="stylesheet">
+  <link href="https://unpkg.com/nes.css@2.3.0/css/nes.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="/assets/css/style.css">
+</head>
+<body>
+<div class="wrapper">
+<header class="header">
+  <h1 class="header__title">
+    <a href="/articles" class="header__title-link">becomemo-app</a>
+  </h1>
+</header>
+<main class="main">
+
+<%= yield %>
+
+</main>
+<footer class="footer">
+  <p class="footer__copyright">© 2021 
+    <a href="https://becolomochi.com">becolomochi</a>
+  </p>
+  <p class="footer__copyright">
+    <a href="https://nostalgic-css.github.io/NES.css/">NES.css - NES-style CSS Framework</a>
+  </p>
+</footer>
+</div>
+</body>
+</html>
