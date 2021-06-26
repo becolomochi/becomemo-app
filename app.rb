@@ -4,83 +4,10 @@ require 'sinatra'
 require 'sinatra/reloader'
 require 'json'
 require 'cgi/util'
+require './lib/article'
 
 set :views, "#{settings.root}/views/articles"
 
-ARTICLE_FILE = 'articles.json'
-
-# ファイルがない場合はファイルを作る
-def if_no_article_file_then_create
-  return if File.exist? ARTICLE_FILE
-
-  dummy_text = '[{"id":0,"title":"メモのサンプル","content":"メモのダミーです。"}]'
-  File.open(ARTICLE_FILE, 'w') do |line|
-    line.write(dummy_text)
-  end
-end
-
-# 出力時にエスケープする
-def text_escape(string)
-  string = CGI.escape_html(string)
-  string.gsub(/\r\n|\r|\n/, '<br>')
-end
-
-# jsonを読み込み、ハッシュに変換する
-def read_json_file_to_hash
-  File.open(ARTICLE_FILE) do |line|
-    JSON.parse(line.read, symbolize_names: true)
-  end
-end
-
-# json形式でファイルに書き込む
-def write_json_file(data)
-  File.open(ARTICLE_FILE, 'w') do |line|
-    line.write(data.to_json)
-  end
-end
-
-# 一覧を取得
-def list_all
-  if_no_article_file_then_create
-  read_json_file_to_hash
-end
-
-# 投稿する
-def post_article(title, content)
-  hash = {
-    id: read_json_file_to_hash.size + 1,
-    title: title,
-    content: content
-  }
-  articles = list_all
-  articles << hash
-  write_json_file(articles)
-end
-
-# idを照らし合わせて記事を取り出す
-def find_article(id)
-  articles = list_all
-  articles.each do |article|
-    return article if article[:id] == id.to_i
-  end
-end
-
-# 記事の削除
-def delete_article(id)
-  articles = list_all
-  articles.delete(find_article(id))
-  write_json_file(articles)
-end
-
-# 記事の編集
-def edit_article(id, title, content)
-  article = find_article(id)
-  article[:title] = title
-  article[:content] = content
-  write_json_file(articles)
-end
-
-# ルーティング
 get '/' do
   redirect to('/articles')
 end
