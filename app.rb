@@ -7,9 +7,11 @@ require './lib/article'
 
 set :views, "#{settings.root}/views/articles"
 
-def text_escape(string)
-  string = CGI.escape_html(string)
-  string.gsub(/\r\n|\r|\n/, '<br>')
+helpers do
+  def text_escape(string)
+    string = CGI.escape_html(string)
+    string.gsub(/\r\n|\r|\n/, '<br>')
+  end
 end
 
 get '/' do
