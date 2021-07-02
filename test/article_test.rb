@@ -20,13 +20,13 @@ class ArticleTest < Minitest::Test
   end
 
   def test_article_list
-    result = [{ :id => '1', :title => 'タイトル', :content => 'めも本文' }]
+    result = [{ id: '1', title: 'タイトル', content: 'めも本文' }]
     assert_equal result, @article.list
   end
 
   def test_article_create
     @article.create('たいとる', '本文本文')
-    result = [{ :id => '2', :title => 'たいとる', :content => '本文本文' }, { :id => '1', :title => 'タイトル', :content => 'めも本文' }]
+    result = [{ id: '2', title: 'たいとる', content: '本文本文' }, { id: '1', title: 'タイトル', content: 'めも本文' }]
     assert_equal result, @article.list
   end
 
