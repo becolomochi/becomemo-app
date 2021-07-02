@@ -18,7 +18,12 @@ class Article
   end
 
   def latest_id
-    list.last[:id].to_i
+    id = 0
+    list.each do |article|
+      article_id = article[:id].to_i
+      id = article_id if id < article_id
+    end
+    id
   end
 
   def create(title, content)

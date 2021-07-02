@@ -12,7 +12,11 @@ class ArticleTest < Minitest::Test
   end
 
   def test_article_latest_id
-    assert_equal 1, @article.latest_id
+    @article.create('たいとる', '本文本文')
+    @article.create('たいとる', '本文本文')
+    @article.create('たいとる', '本文本文')
+    @article.edit(2, 'title', 'content')
+    assert_equal 4, @article.latest_id
   end
 
   def test_article_list
