@@ -1,63 +1,45 @@
 # frozen_string_literal: true
 
+require 'pg'
+
 class Article
-  ARTICLE_FILE = 'articles.json'
-
-  def if_no_article_file_then_create
-    return if File.exist? ARTICLE_FILE
-  
-    dummy_text = '[{"id":1,"title":"メモのサンプル","content":"メモのダミーです。"}]'
-    File.open(ARTICLE_FILE, 'w') do |line|
-      line.write(dummy_text)
-    end
-  end
-
   def initialize
-    if_no_article_file_then_create
+    @connect = PG.connect(dbname: 'becomemo')
   end
 
   def list
-    File.open(ARTICLE_FILE) do |line|
-      JSON.parse(line.read, symbolize_names: true)
+    array = []
+    @connect.exec('SELECT * FROM Article') do |articles|
+      articles.each do |article|
+        array << article
+      end
     end
-  end
-
-  def write_json_file(data)
-    File.open(ARTICLE_FILE, 'w') do |line|
-      line.write(data.to_json)
-    end
+    array
   end
 
   def latest_id
-    list.last[:id]
+    list.last['id'].to_i
   end
 
   def create(title, content)
-    hash = {
-      id: latest_id + 1,
-      title: title,
-      content: content
-    }
-    write_json_file(list << hash)
+    id = latest_id + 1
+    data = "INSERT INTO article VALUES (#{id}, '#{title}', '#{content}')"
+    @connect.exec(data)
   end
 
   def get(articles, id)
     articles.each do |article|
-      return article if article[:id] == id.to_i
+      return article if article['id'].to_i == id
     end
   end
 
   def drop(id)
-    articles = list
-    articles.delete(get(articles, id))
-    write_json_file(articles)
+    data = 'DELETE FROM Article WHERE id=$1'
+    @connect.exec(data, [id])
   end
 
   def edit(id, title, content)
-    articles = list
-    article = get(articles, id)
-    article[:title] = title
-    article[:content] = content
-    write_json_file(articles)
+    data = 'UPDATE Article SET title=$1, content=$2 WHERE id=$3'
+    @connect.exec(data, [title, content, id])
   end
 end
