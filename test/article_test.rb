@@ -16,22 +16,22 @@ class ArticleTest < Minitest::Test
   end
 
   def test_article_list
-    result = [{ 'id' => '1', 'title' => 'タイトル', 'content' => 'めも本文' }]
+    result = [{ :id => '1', :title => 'タイトル', :content => 'めも本文' }]
     assert_equal result, @article.list
   end
 
   def test_article_create
     @article.create('たいとる', '本文本文')
-    result = [{ 'id' => '1', 'title' => 'タイトル', 'content' => 'めも本文' }, { 'id' => '2', 'title' => 'たいとる', 'content' => '本文本文' }]
+    result = [{ :id => '1', :title => 'タイトル', :content => 'めも本文' }, { :id => '2', :title => 'たいとる', :content => '本文本文' }]
     assert_equal result, @article.list
   end
 
   def test_article_get
     id = 1
     get_article = @article.get(@article.list, id)
-    assert_equal get_article['id'].to_i, 1
-    assert_equal get_article['title'], 'タイトル'
-    assert_equal get_article['content'], 'めも本文'
+    assert_equal get_article[:id].to_i, 1
+    assert_equal get_article[:title], 'タイトル'
+    assert_equal get_article[:content], 'めも本文'
   end
 
   def test_article_drop
@@ -46,9 +46,9 @@ class ArticleTest < Minitest::Test
     content = 'メモ本文修正'
     @article.edit(id, title, content)
     get_article = @article.get(@article.list, id)
-    assert_equal get_article['id'].to_i, 1
-    assert_equal get_article['title'], 'メモ修正'
-    assert_equal get_article['content'], 'メモ本文修正'
+    assert_equal get_article[:id].to_i, 1
+    assert_equal get_article[:title], 'メモ修正'
+    assert_equal get_article[:content], 'メモ本文修正'
   end
 
   def test_article_not_duplicate_id

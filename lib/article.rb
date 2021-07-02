@@ -11,14 +11,14 @@ class Article
     array = []
     @connect.exec('SELECT * FROM Article') do |articles|
       articles.each do |article|
-        array << article
+        array << article.transform_keys!(&:to_sym)
       end
     end
     array
   end
 
   def latest_id
-    list.last['id'].to_i
+    list.last[:id].to_i
   end
 
   def create(title, content)
@@ -29,7 +29,7 @@ class Article
 
   def get(articles, id)
     articles.each do |article|
-      return article if article['id'].to_i == id
+      return article if article[:id].to_i == id
     end
   end
 
