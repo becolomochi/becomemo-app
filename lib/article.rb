@@ -9,7 +9,7 @@ class Article
 
   def list
     array = []
-    @connect.exec('SELECT * FROM Article') do |articles|
+    @connect.exec('SELECT * FROM Article ORDER BY id DESC') do |articles|
       articles.each do |article|
         array << article.transform_keys!(&:to_sym)
       end
