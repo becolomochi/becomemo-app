@@ -36,7 +36,7 @@ end
 
 get '/articles/:id' do
   article = Article.new
-  @article = article.get(article.list, params[:id])
+  @article = article.get(article.list, params[:id].to_i)
   if @article
     @page_title = 'メモの詳細 | becomemo-app'
     erb :show
@@ -47,19 +47,19 @@ end
 
 delete '/articles/:id' do
   article = Article.new
-  article.drop(params[:id])
+  article.drop(params[:id].to_i)
   redirect to('/articles')
 end
 
 patch '/articles/:id' do
   article = Article.new
-  article.edit(params[:id], params[:title], params[:content])
+  article.edit(params[:id].to_i, params[:title], params[:content])
   redirect to("/articles/#{params[:id]}")
 end
 
 get '/articles/:id/edit' do
   article = Article.new
-  @article = article.get(article.list, params[:id])
+  @article = article.get(article.list, params[:id].to_i)
   @page_title = 'メモの編集 | becomemo-app'
   erb :edit
 end
