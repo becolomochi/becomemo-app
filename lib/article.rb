@@ -32,8 +32,8 @@ class Article
     @connect.exec(data)
   end
 
-  def get(articles, id)
-    articles.each do |article|
+  def get(id)
+    list.each do |article|
       return article if article[:id].to_i == id
     end
   end

@@ -32,7 +32,7 @@ class ArticleTest < Minitest::Test
 
   def test_article_get
     id = 1
-    get_article = @article.get(@article.list, id)
+    get_article = @article.get(id)
     assert_equal get_article[:id].to_i, 1
     assert_equal get_article[:title], 'タイトル'
     assert_equal get_article[:content], 'めも本文'
@@ -41,7 +41,7 @@ class ArticleTest < Minitest::Test
   def test_article_drop
     id = 1
     @article.drop(id)
-    assert_equal [], @article.get(@article.list, id)
+    assert_equal [], @article.get(id)
   end
 
   def test_article_edit
@@ -49,7 +49,7 @@ class ArticleTest < Minitest::Test
     title = 'メモ修正'
     content = 'メモ本文修正'
     @article.edit(id, title, content)
-    get_article = @article.get(@article.list, id)
+    get_article = @article.get(id)
     assert_equal get_article[:id].to_i, 1
     assert_equal get_article[:title], 'メモ修正'
     assert_equal get_article[:content], 'メモ本文修正'

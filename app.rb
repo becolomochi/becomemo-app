@@ -39,7 +39,7 @@ get '/articles/new' do
 end
 
 get '/articles/:id' do
-  @article = @article.get(@article.list, params[:id].to_i)
+  @article = @article.get(params[:id].to_i)
   if @article
     @page_title = 'メモの詳細 | becomemo-app'
     erb :show
@@ -59,7 +59,7 @@ patch '/articles/:id' do
 end
 
 get '/articles/:id/edit' do
-  @article = @article.get(@article.list, params[:id].to_i)
+  @article = @article.get(params[:id].to_i)
   @page_title = 'メモの編集 | becomemo-app'
   erb :edit
 end
