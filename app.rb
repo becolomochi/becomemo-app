@@ -14,20 +14,22 @@ helpers do
   end
 end
 
+before do
+  @article = Article.new
+end
+
 get '/' do
   redirect to('/articles')
 end
 
 get '/articles' do
-  article = Article.new
-  @articles = article.list
+  @articles = @article.list
   @page_title = 'becomemo-app'
   erb :index
 end
 
 post '/articles' do
-  article = Article.new
-  article.create(params[:title], params[:content])
+  @article.create(params[:title], params[:content])
   redirect to('/articles')
 end
 
@@ -37,8 +39,7 @@ get '/articles/new' do
 end
 
 get '/articles/:id' do
-  article = Article.new
-  @article = article.get(article.list, params[:id].to_i)
+  @article = @article.get(@article.list, params[:id].to_i)
   if @article
     @page_title = 'メモの詳細 | becomemo-app'
     erb :show
@@ -48,20 +49,17 @@ get '/articles/:id' do
 end
 
 delete '/articles/:id' do
-  article = Article.new
-  article.drop(params[:id].to_i)
+  @article.drop(params[:id].to_i)
   redirect to('/articles')
 end
 
 patch '/articles/:id' do
-  article = Article.new
-  article.edit(params[:id].to_i, params[:title], params[:content])
+  @article.edit(params[:id].to_i, params[:title], params[:content])
   redirect to("/articles/#{params[:id]}")
 end
 
 get '/articles/:id/edit' do
-  article = Article.new
-  @article = article.get(article.list, params[:id].to_i)
+  @article = @article.get(@article.list, params[:id].to_i)
   @page_title = 'メモの編集 | becomemo-app'
   erb :edit
 end
