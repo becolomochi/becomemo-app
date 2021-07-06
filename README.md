@@ -2,10 +2,6 @@
 
 Fjord Boot Camp Sinatra memo app with PostgreSQL.
 
-## 動作環境
-
-- Chrome だと投稿・編集・削除機能が動きません…
-- Firefox か Safari でご確認ください:bow:
 ## 事前準備
 
 アプリを起動する前に以下の準備をお願いします。
