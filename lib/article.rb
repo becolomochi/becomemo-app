@@ -28,8 +28,8 @@ class Article
 
   def create(title, content)
     id = latest_id + 1
-    data = "INSERT INTO article VALUES (#{id}, '#{title}', '#{content}')"
-    @connect.exec(data)
+    data = 'INSERT INTO article VALUES ($1, $2, $3)'
+    @connect.exec(data, [id, title, content])
   end
 
   def get(id)
