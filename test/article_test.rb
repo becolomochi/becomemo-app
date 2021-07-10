@@ -41,7 +41,7 @@ class ArticleTest < Minitest::Test
   def test_article_drop
     id = 1
     @article.drop(id)
-    assert_equal [], @article.get(id)
+    assert_nil @article.get(id)
   end
 
   def test_article_edit
