@@ -8,22 +8,15 @@ class Article
   end
 
   def list
-    array = []
     @connect.exec('SELECT * FROM Article ORDER BY id DESC') do |articles|
-      articles.each do |article|
-        array << article.transform_keys!(&:to_sym)
-      end
+      articles.map { |article| article.transform_keys!(&:to_sym) }
     end
-    array
   end
 
   def latest_id
-    id = 0
-    list.each do |article|
-      article_id = article[:id].to_i
-      id = article_id if id < article_id
-    end
-    id
+    return 0 if list.empty?
+
+    list.map { |article| article[:id].to_i }.max
   end
 
   def create(title, content)
@@ -33,9 +26,7 @@ class Article
   end
 
   def get(id)
-    list.each do |article|
-      return article if article[:id].to_i == id
-    end
+    list.find { |article| article[:id].to_i == id }
   end
 
   def drop(id)
