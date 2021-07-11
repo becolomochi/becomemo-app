@@ -2,15 +2,16 @@
 
 require 'sinatra'
 require 'sinatra/reloader'
-require 'json'
 require 'cgi/util'
 require './lib/article'
 
 set :views, "#{settings.root}/views/articles"
 
-def text_escape(string)
-  string = CGI.escape_html(string)
-  string.gsub(/\r\n|\r|\n/, '<br>')
+helpers do
+  def text_escape(string)
+    string = CGI.escape_html(string)
+    string.gsub(/\r\n|\r|\n/, '<br>')
+  end
 end
 
 get '/' do
@@ -18,15 +19,13 @@ get '/' do
 end
 
 get '/articles' do
-  article = Article.new
-  @articles = article.list
+  @articles = Article.list
   @page_title = 'becomemo-app'
   erb :index
 end
 
 post '/articles' do
-  article = Article.new
-  article.create(params[:title], params[:content])
+  Article.create(params[:title], params[:content])
   redirect to('/articles')
 end
 
@@ -36,8 +35,7 @@ get '/articles/new' do
 end
 
 get '/articles/:id' do
-  article = Article.new
-  @article = article.get(article.list, params[:id])
+  @article = Article.get(params[:id].to_i)
   if @article
     @page_title = 'メモの詳細 | becomemo-app'
     erb :show
@@ -47,20 +45,17 @@ get '/articles/:id' do
 end
 
 delete '/articles/:id' do
-  article = Article.new
-  article.drop(params[:id])
+  Article.drop(params[:id].to_i)
   redirect to('/articles')
 end
 
 patch '/articles/:id' do
-  article = Article.new
-  article.edit(params[:id], params[:title], params[:content])
+  Article.edit(params[:id].to_i, params[:title], params[:content])
   redirect to("/articles/#{params[:id]}")
 end
 
 get '/articles/:id/edit' do
-  article = Article.new
-  @article = article.get(article.list, params[:id])
+  @article = Article.get(params[:id].to_i)
   @page_title = 'メモの編集 | becomemo-app'
   erb :edit
 end

@@ -1,63 +1,39 @@
 # frozen_string_literal: true
 
+require 'pg'
+
 class Article
-  ARTICLE_FILE = 'articles.json'
+  @connect = PG.connect(dbname: 'becomemo')
 
-  def if_no_article_file_then_create
-    return if File.exist? ARTICLE_FILE
-  
-    dummy_text = '[{"id":1,"title":"メモのサンプル","content":"メモのダミーです。"}]'
-    File.open(ARTICLE_FILE, 'w') do |line|
-      line.write(dummy_text)
+  def self.list
+    @connect.exec('SELECT * FROM Article ORDER BY id DESC') do |articles|
+      articles.map { |article| article.transform_keys!(&:to_sym) }
     end
   end
 
-  def initialize
-    if_no_article_file_then_create
+  def self.latest_id
+    return 0 if list.empty?
+
+    list.map { |article| article[:id].to_i }.max
   end
 
-  def list
-    File.open(ARTICLE_FILE) do |line|
-      JSON.parse(line.read, symbolize_names: true)
-    end
+  def self.create(title, content)
+    id = latest_id + 1
+    data = 'INSERT INTO article VALUES ($1, $2, $3)'
+    @connect.exec(data, [id, title, content])
   end
 
-  def write_json_file(data)
-    File.open(ARTICLE_FILE, 'w') do |line|
-      line.write(data.to_json)
-    end
+  def self.get(id)
+    list.find { |article| article[:id].to_i == id }
   end
 
-  def latest_id
-    list.last[:id]
+  def self.drop(id)
+    data = 'DELETE FROM Article WHERE id=$1'
+    @connect.exec(data, [id])
   end
 
-  def create(title, content)
-    hash = {
-      id: latest_id + 1,
-      title: title,
-      content: content
-    }
-    write_json_file(list << hash)
-  end
-
-  def get(articles, id)
-    articles.each do |article|
-      return article if article[:id] == id.to_i
-    end
-  end
-
-  def drop(id)
-    articles = list
-    articles.delete(get(articles, id))
-    write_json_file(articles)
-  end
-
-  def edit(id, title, content)
-    articles = list
-    article = get(articles, id)
-    article[:title] = title
-    article[:content] = content
-    write_json_file(articles)
+  def self.edit(id, title, content)
+    data = 'UPDATE Article SET title=$1, content=$2 WHERE id=$3'
+    @connect.exec(data, [title, content, id])
   end
 end
